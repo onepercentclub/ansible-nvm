@@ -27,7 +27,8 @@
   shell: source ~/.profile && nvm install {{ nvm.node_version }}
   args:
     executable: /bin/bash
-  become: "{{ nvm.user }}"
+  become: yes
+  become_user: "{{ nvm.user }}"
   register: nvm_install_result
   changed_when: "'is already installed.' not in nvm_install_result.stdout"
   tags: nvm
@@ -36,7 +37,8 @@
   shell: source ~/.profile && nvm ls | grep -e 'default -> {{ nvm.node_version }}'
   args:
     executable: /bin/bash
-  become: "{{ nvm.user }}"
+  become: yes
+  become_user: "{{ nvm.user }}"
   register: nvm_check_default
   changed_when: False
   ignore_errors: True
@@ -46,6 +48,7 @@
   shell: source ~/.profile && nvm alias default {{ nvm.node_version }}
   args:
     executable: /bin/bash
-  become: "{{ nvm.user }}"
+  become: yes
+  become_user: "{{ nvm.user }}"
   when: nvm_check_default|failed
   tags: nvm
